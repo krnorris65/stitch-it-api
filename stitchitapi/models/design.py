@@ -9,7 +9,7 @@ class Design(models.Model):
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=255)
     completed_date = models.DateTimeField()
-    photo = models.ImageField(upload_to='img/photo', blank=True, null=True)
+    photo = models.CharField(max_length=255)
     fabric = models.ForeignKey(Fabric, null=True, on_delete=models.SET_NULL)
     size = models.ForeignKey(Size, null=True, on_delete=models.SET_NULL)
     user = models.ForeignKey(Stitcher, on_delete=models.CASCADE)
