@@ -47,3 +47,47 @@ class Sizes(ViewSet):
             context={'request': request}
         )
         return Response(serializer.data)
+    
+    def create(self, request):
+        """Handle POST operations
+
+        Returns:
+            Response -- JSON serialized size instance
+        """
+        newsize = Size()
+        newsize.size = request.data["size"]
+        newsize.save()
+
+        serializer = SizeSerializer(newsize, context={'request': request})
+
+        return Response(serializer.data)
+    
+    def update(self, request, pk=None):
+        """Handle PUT requests for a size
+
+        Returns:
+            Response -- Empty body with 204 status code
+        """
+        size = Size.objects.get(pk=pk)
+        size.size = request.data["size"]
+        size.save()
+
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+    def destroy(self, request, pk=None):
+        """Handle DELETE requests for a single size
+
+        Returns:
+            Response -- 200, 404, or 500 status code
+        """
+        try:
+            size = Size.objects.get(pk=pk)
+            size.delete()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        except Size.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
