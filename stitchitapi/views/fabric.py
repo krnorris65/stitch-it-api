@@ -47,3 +47,18 @@ class Fabrics(ViewSet):
             context={'request': request}
         )
         return Response(serializer.data)
+
+    def create(self, request):
+        """Handle POST operations
+
+        Returns:
+            Response -- JSON serialized Fabric instance
+        """
+        newfabric = Fabric()
+        newfabric.type = request.data["type"]
+        newfabric.count = request.data["count"]
+        newfabric.save()
+
+        serializer = FabricSerializer(newfabric, context={'request': request})
+
+        return Response(serializer.data)
