@@ -14,4 +14,4 @@ class Stitcher(models.Model):
         return f'{self.first_name} {self.last_name}'
 
     class Meta:
-        ordering = ('user.last_name', 'user.first_name')
+        ordering = (F('user.last_name'), F('user.first_name'))

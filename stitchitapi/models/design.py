@@ -15,7 +15,7 @@ class Design(models.Model):
     user = models.ForeignKey(Stitcher, on_delete=models.CASCADE)
 
     class Meta:
-        ordering = (F('completed_date').desc(nulls_first=True),)
+        ordering = ('completed_date',)
 
     def __str__(self):
         return self.title
