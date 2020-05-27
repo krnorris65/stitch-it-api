@@ -6,8 +6,6 @@ class Size(models.Model):
 
     class Meta:
         ordering = ("size",)
-        verbose_name = ("size")
-        verbose_name_plural = ("sizes")
 
     def __str__(self):
         return self.size

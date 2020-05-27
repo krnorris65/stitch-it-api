@@ -6,9 +6,7 @@ class Fabric(models.Model):
     count = models.IntegerField()
 
     class Meta:
-        ordering = ("type",)
-        verbose_name = ("fabric")
-        verbose_name_plural = ("fabrics")
+        ordering = ("type", "count")
 
     def __str__(self):
         return self.type

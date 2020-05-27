@@ -9,15 +9,13 @@ class Design(models.Model):
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=255, null=True)
     completed_date = models.DateTimeField(null=True)
-    photo = models.CharField(max_length=255, null=True)
+    photo = models.ImageField(upload_to="design/images/", null=True, blank=True)
     fabric = models.ForeignKey(Fabric, null=True, on_delete=models.SET_NULL)
     size = models.ForeignKey(Size, null=True, on_delete=models.SET_NULL)
     user = models.ForeignKey(Stitcher, on_delete=models.CASCADE)
 
     class Meta:
-        ordering = ("title",)
-        verbose_name = ("design")
-        verbose_name_plural = ("designs")
+        ordering = (F('completed_date').desc(nulls_first=True),)
 
     def __str__(self):
         return self.title
