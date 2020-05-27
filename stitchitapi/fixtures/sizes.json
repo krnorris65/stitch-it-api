@@ -1,0 +1,37 @@
+[
+    {
+      "model": "stitchitapi.Size",
+      "pk": 1,
+      "fields": {
+        "size": "4x6 in"
+      }
+    },
+    {
+      "model": "stitchitapi.Size",
+      "pk": 2,
+      "fields": {
+        "size": "4 in round"
+      }
+    },
+    {
+      "model": "stitchitapi.Size",
+      "pk": 3,
+      "fields": {
+        "size": "8x10 in"
+      }
+    },
+    {
+      "model": "stitchitapi.Size",
+      "pk": 4,
+      "fields": {
+        "size": "5x7 in"
+      }
+    },
+    {
+      "model": "stitchitapi.Size",
+      "pk": 5,
+      "fields": {
+        "size": "3 in round"
+      }
+    }
+  ]
