@@ -62,3 +62,16 @@ class Fabrics(ViewSet):
         serializer = FabricSerializer(newfabric, context={'request': request})
 
         return Response(serializer.data)
+    
+    def update(self, request, pk=None):
+        """Handle PUT requests for a fabric
+
+        Returns:
+            Response -- Empty body with 204 status code
+        """
+        fabric = Fabric.objects.get(pk=pk)
+        fabric.type = request.data["type"]
+        fabric.count = request.data["count"]
+        fabric.save()
+
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
