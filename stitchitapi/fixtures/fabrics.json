@@ -1,0 +1,42 @@
+[
+    {
+      "model": "stitchitapi.Fabric",
+      "pk": 1,
+      "fields": {
+        "type": "Aida",
+        "count": 14
+      }
+    },
+    {
+      "model": "stitchitapi.Fabric",
+      "pk": 2,
+      "fields": {
+        "type": "Aida",
+        "count": 16
+      }
+    },
+    {
+      "model": "stitchitapi.Fabric",
+      "pk": 3,
+      "fields": {
+        "type": "Aida",
+        "count": 11
+      }
+    },
+    {
+      "model": "stitchitapi.Fabric",
+      "pk": 4,
+      "fields": {
+        "type": "Aida",
+        "count": 18
+      }
+    },
+    {
+      "model": "stitchitapi.Fabric",
+      "pk": 5,
+      "fields": {
+        "type": "Aida",
+        "count": 22
+      }
+    }
+  ]

@@ -17,8 +17,10 @@ from django.urls import include, path
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
 from stitchitapi.models import *
+from stitchitapi.views import Fabrics
 
 router = routers.DefaultRouter(trailing_slash=False)
+router.register(r'fabrics', Fabrics, 'fabric')
 
 urlpatterns = [
     path('', include(router.urls)),
