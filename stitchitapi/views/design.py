@@ -81,7 +81,7 @@ class Designs(ViewSet):
         """Handle PUT requests for a design. The user can only edit their own designs
 
         Returns:
-            Response -- Empty body with 204 status code
+            Response -- Empty body with 204 status code or 403 error code
         """
         requesting_user = Stitcher.objects.get(user=request.auth.user)
         design = Design.objects.get(pk=pk)
@@ -99,4 +99,26 @@ class Designs(ViewSet):
 
             return Response({}, status=status.HTTP_204_NO_CONTENT)
         else:
-            return Response({}, status=status.HTTP_403_FORBIDDEN)
+            return Response({'message': "Not authorized to edit this design"}, status=status.HTTP_403_FORBIDDEN)
+    
+    def destroy(self, request, pk=None):
+        """Handle DELETE requests for a single design. The user can only delete their own designs
+
+        Returns:
+            Response -- 200, 403, 404, or 500 status code
+        """
+        try:
+            requesting_user = Stitcher.objects.get(user=request.auth.user)
+            design = Design.objects.get(pk=pk)
+            if design.stitcher == requesting_user:
+                design.delete()
+
+                return Response({}, status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response({'message': "Not authorized to delete this design"}, status=status.HTTP_403_FORBIDDEN)
+
+        except Design.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
