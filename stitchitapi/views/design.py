@@ -76,3 +76,27 @@ class Designs(ViewSet):
         serializer = DesignSerializer(newdesign, context={'request': request})
 
         return Response(serializer.data)
+    
+    def update(self, request, pk=None):
+        """Handle PUT requests for a design. The user can only edit their own designs
+
+        Returns:
+            Response -- Empty body with 204 status code
+        """
+        requesting_user = Stitcher.objects.get(user=request.auth.user)
+        design = Design.objects.get(pk=pk)
+        if design.stitcher == requesting_user:
+            fabric = Fabric.objects.get(pk=request.data['fabric_id'])
+            size = Size.objects.get(pk=request.data['size_id'])
+
+            design.title = request.data["title"]
+            design.description = request.data["description"]
+            design.completed_date = request.data["completed_date"]
+            design.photo = request.data["photo"]
+            design.fabric = fabric
+            design.size = size
+            design.save()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response({}, status=status.HTTP_403_FORBIDDEN)
