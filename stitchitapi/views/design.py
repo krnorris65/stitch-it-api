@@ -3,7 +3,9 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from stitchitapi.models import Fabric, Size, Design
+from stitchitapi.models import Fabric, Size, Design, Stitcher
+from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
+
 
 class DesignSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for design
@@ -22,6 +24,8 @@ class DesignSerializer(serializers.HyperlinkedModelSerializer):
 
 class Designs(ViewSet):
     """Designs for Stitch It"""
+    parser_classes = (MultiPartParser, FormParser, JSONParser,)
+
     def retrieve(self, request, pk=None):
         """Handle GET requests for single design
 
@@ -47,4 +51,28 @@ class Designs(ViewSet):
             many=True,
             context={'request': request}
         )
+        return Response(serializer.data)
+    
+    def create(self, request):
+        """Handle POST operations
+
+        Returns:
+            Response -- JSON serialized Design instance
+        """
+        fabric = Fabric.objects.get(pk=request.data['fabric_id'])
+        size = Size.objects.get(pk=request.data['size_id'])
+        stitcher = Stitcher.objects.get(user=request.auth.user)
+
+        newdesign = Design()
+        newdesign.title = request.data["title"]
+        newdesign.description = request.data["description"]
+        newdesign.completed_date = request.data["completed_date"]
+        newdesign.photo = request.data["photo"]
+        newdesign.fabric = fabric
+        newdesign.size = size
+        newdesign.stitcher = stitcher
+        newdesign.save()
+
+        serializer = DesignSerializer(newdesign, context={'request': request})
+
         return Response(serializer.data)
