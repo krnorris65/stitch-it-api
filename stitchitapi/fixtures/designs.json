@@ -1,0 +1,47 @@
+[
+    {
+      "model": "stitchitapi.Design",
+      "pk": 1,
+      "fields": {
+        "title": "New Design",
+        "description": "white fabric",
+        "completed_date": "2017-03-22",
+        "fabric_id": 1,
+        "size_id": 2,
+        "stitcher_id": 1
+      }
+    },
+    {
+      "model": "stitchitapi.Design",
+      "pk": 2,
+      "fields": {
+        "title": "New Design 2",
+        "description": "grey fabric",
+        "fabric_id": 2,
+        "size_id": 1,
+        "stitcher_id": 2
+      }
+    },
+    {
+      "model": "stitchitapi.Design",
+      "pk": 3,
+      "fields": {
+        "title": "New Design 3",
+        "description": "blue fabric",
+        "fabric_id": 2,
+        "size_id": 5,
+        "stitcher_id": 1
+      }
+    },
+    {
+      "model": "stitchitapi.Design",
+      "pk": 4,
+      "fields": {
+        "title": "New Design 4",
+        "description": "oatmeal fabric",
+        "fabric_id": 3,
+        "size_id": 3,
+        "stitcher_id": 2
+      }
+    }
+  ]
