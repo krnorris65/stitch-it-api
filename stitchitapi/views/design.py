@@ -40,12 +40,21 @@ class Designs(ViewSet):
             return HttpResponseServerError(ex)
     
     def list(self, request):
-        """Handle GET requests to designs resource
+        """Handle GET requests to designs resource. If a stitcher id is included in the params, return that stitcher's designs, if not, return the designs of the requesting user
 
         Returns:
             Response -- JSON serialized list of designs
         """
         designs = Design.objects.all()
+
+        # Support filtering designs by stitcher id
+        stitcher_id = self.request.query_params.get('stitcher', None)
+        if stitcher_id is not None:
+            designs = designs.filter(stitcher__id=stitcher_id)
+        else:
+            requesting_user = Stitcher.objects.get(user=request.auth.user)
+            designs = designs.filter(stitcher=requesting_user)
+
         serializer = DesignSerializer(
             designs,
             many=True,
