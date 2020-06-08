@@ -12,7 +12,7 @@ class Design(models.Model):
     photo = models.ImageField(upload_to="design/images/", null=True, blank=True)
     fabric = models.ForeignKey(Fabric, null=True, on_delete=models.SET_NULL)
     size = models.ForeignKey(Size, null=True, on_delete=models.SET_NULL)
-    user = models.ForeignKey(Stitcher, on_delete=models.CASCADE)
+    stitcher = models.ForeignKey(Stitcher, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ('completed_date',)
