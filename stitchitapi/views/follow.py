@@ -70,3 +70,19 @@ class Follows(ViewSet):
         serializer = FollowSerializer(newfollow, context={'request': request})
 
         return Response(serializer.data)
+    
+    def update(self, request, pk=None):
+        """Handle PUT requests for a follow. User can update the pending status for follows where they are the  stitcher
+
+        Returns:
+            Response -- Empty body with 204 status code or 403 error code
+        """
+        requesting_user = Stitcher.objects.get(user=request.auth.user)
+        follow = Follow.objects.get(pk=pk)
+
+        if follow.stitcher == requesting_user:
+            follow.pending = request.data["pending"]
+            follow.save()
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response({'message': "Not authorized to edit this follow"}, status=status.HTTP_403_FORBIDDEN)
