@@ -23,3 +23,28 @@ class FollowSerializer(serializers.HyperlinkedModelSerializer):
 class Follows(ViewSet):
     """Follows for Stitch It"""
     def retrieve(self, request, pk=None):
+        """Handle GET requests for single follow
+
+        Returns:
+            Response -- JSON serialized follow instance
+        """
+        try:
+            follow = Follow.objects.get(pk=pk)
+            serializer = FollowSerializer(follow, context={'request': request})
+            return Response(serializer.data)
+        except Exception as ex:
+            return HttpResponseServerError(ex)
+    
+    def list(self, request):
+        """Handle GET requests to follows resource
+
+        Returns:
+            Response -- JSON serialized list of follows
+        """
+        follows = Follow.objects.all()
+        serializer = FollowSerializer(
+            follows,
+            many=True,
+            context={'request': request}
+        )
+        return Response(serializer.data)

@@ -17,13 +17,16 @@ from django.urls import include, path
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
 from stitchitapi.models import *
-from stitchitapi.views import Fabrics, Sizes, Designs
+from stitchitapi.views import Fabrics, Sizes, Designs, Follows, Stitchers, Users
 from stitchitapi.views import register_user, login_user
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'fabrics', Fabrics, 'fabric')
 router.register(r'sizes', Sizes, 'size')
 router.register(r'designs', Designs, 'design')
+router.register(r'follows', Follows, 'follow')
+router.register(r'stitchers', Stitchers, 'stitcher')
+router.register(r'users', Users, 'user')
 
 urlpatterns = [
     path('', include(router.urls)),
