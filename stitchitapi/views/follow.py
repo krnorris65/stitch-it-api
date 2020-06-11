@@ -38,12 +38,16 @@ class Follows(ViewSet):
             return HttpResponseServerError(ex)
     
     def list(self, request):
-        """Handle GET requests to follows resource
+        """Handle GET requests to follows resource. Returns all the follows the requesting user has. 
 
         Returns:
             Response -- JSON serialized list of follows
         """
-        follows = Follow.objects.all()
+        requesting_user = Stitcher.objects.get(user=request.auth.user)
+
+        follows = Follow.objects.filter(follower=requesting_user)
+
+
         serializer = FollowSerializer(
             follows,
             many=True,
