@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from stitchitapi.models import Stitcher, Follow
+import operator
+
 
 class FollowSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for follow
@@ -47,4 +49,24 @@ class Follows(ViewSet):
             many=True,
             context={'request': request}
         )
+        return Response(serializer.data)
+    
+    def create(self, request):
+        """Handle POST operations
+
+        Returns:
+            Response -- JSON serialized Follow instance
+        """
+        follower = Stitcher.objects.get(user=request.auth.user)
+        stitcher = Stitcher.objects.get(pk=request.data["stitcher_id"])
+        newfollow = Follow()
+        newfollow.follower = follower
+        newfollow.stitcher = stitcher
+        # if public profile is true then the request is not pending, if public profile is false then the request is pending
+        newfollow.pending = operator.not_(stitcher.public_profile)
+
+        newfollow.save()
+
+        serializer = FollowSerializer(newfollow, context={'request': request})
+
         return Response(serializer.data)
