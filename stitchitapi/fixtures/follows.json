@@ -1,0 +1,47 @@
+[
+    {
+      "model": "stitchitapi.Follow",
+      "pk": 1,
+      "fields": {
+        "follower_id": 1,
+        "stitcher_id": 2,
+        "pending": true
+      }
+    },
+    {
+      "model": "stitchitapi.Follow",
+      "pk": 2,
+      "fields": {
+        "follower_id": 1,
+        "stitcher_id": 3,
+        "pending": false
+      }
+    },
+    {
+      "model": "stitchitapi.Follow",
+      "pk": 3,
+      "fields": {
+        "follower_id": 2,
+        "stitcher_id": 4,
+        "pending": false
+      }
+    },
+    {
+      "model": "stitchitapi.Follow",
+      "pk": 4,
+      "fields": {
+        "follower_id": 2,
+        "stitcher_id": 1,
+        "pending": false
+      }
+    },
+    {
+      "model": "stitchitapi.Follow",
+      "pk": 5,
+      "fields": {
+        "follower_id": 4,
+        "stitcher_id": 3,
+        "pending": true
+      }
+    }
+  ]
