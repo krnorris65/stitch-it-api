@@ -9,7 +9,7 @@ class Follow(models.Model):
     pending = models.BooleanField()
 
     class Meta:
-        ordering = (F('stitcher.user.last_name'), F('stitcher.user.first_name'))
+        ordering = (F('stitcher__user__last_name'), F('stitcher__user__first_name'))
 
     def __str__(self):
         return f'{self.follower.user.first_name} {self.follower.user.last_name} is following {self.stitcher.user.first_name} {self.stitcher.user.last_name}'
