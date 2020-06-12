@@ -63,9 +63,6 @@ def register_user(request):
         user=new_user
     )
 
-    # Commit the user to the database by saving it
-    stitcher.save()
-
     # Use the REST Framework's token generator on the new user account
     token = Token.objects.create(user=new_user)
 

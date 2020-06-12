@@ -66,7 +66,7 @@ class Follows(ViewSet):
         newfollow = Follow()
         newfollow.follower = follower
         newfollow.stitcher = stitcher
-        # if public profile is true then the request is not pending, if public profile is false then the request is pending
+        # if public profile is true then pending is false, if public profile is false then pending is true
         newfollow.pending = operator.not_(stitcher.public_profile)
 
         newfollow.save()
