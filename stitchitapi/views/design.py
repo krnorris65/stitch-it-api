@@ -75,7 +75,8 @@ class Designs(ViewSet):
         newdesign = Design()
         newdesign.title = request.data["title"]
         newdesign.description = request.data["description"]
-        newdesign.completed_date = request.data["completed_date"]
+        if request.data["completed_date"] != "":
+            newdesign.completed_date = request.data["completed_date"]
         newdesign.photo = request.data["photo"]
         newdesign.fabric = fabric
         newdesign.size = size
@@ -100,7 +101,8 @@ class Designs(ViewSet):
 
             design.title = request.data["title"]
             design.description = request.data["description"]
-            design.completed_date = request.data["completed_date"]
+            if request.data["completed_date"] != "":
+                design.completed_date = request.data["completed_date"]
             design.photo = request.data["photo"]
             design.fabric = fabric
             design.size = size
