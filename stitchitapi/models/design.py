@@ -2,6 +2,8 @@ from django.db import models
 from .fabric import Fabric
 from .size import Size
 from .stitcher import Stitcher
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 
 class Design(models.Model):
@@ -19,3 +21,7 @@ class Design(models.Model):
 
     def __str__(self):
         return self.title
+    
+@receiver(post_delete, sender=Design)
+def submission_delete(sender, instance, **kwargs):
+    instance.photo.delete(False) 
