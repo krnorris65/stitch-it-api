@@ -41,6 +41,12 @@ class Sizes(ViewSet):
             Response -- JSON serialized list of sizes
         """
         sizes = Size.objects.all()
+
+        size = self.request.query_params.get('size', None)
+
+        if size is not None:
+            sizes = sizes.filter(size=size)
+
         serializer = SizeSerializer(
             sizes,
             many=True,
