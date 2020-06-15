@@ -42,10 +42,10 @@ class Sizes(ViewSet):
         """
         sizes = Size.objects.all()
 
-        size = self.request.query_params.get('size', None)
+        size_param = self.request.query_params.get('size', None)
 
-        if size is not None:
-            sizes = sizes.filter(size=size)
+        if size_param is not None:
+            sizes = sizes.filter(size=size_param)
 
         serializer = SizeSerializer(
             sizes,
