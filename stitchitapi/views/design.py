@@ -19,7 +19,7 @@ class DesignSerializer(serializers.HyperlinkedModelSerializer):
             view_name='design',
             lookup_field='id'
         )
-        fields = ('id', 'title', 'description', 'completed_date', 'photo', 'fabric', 'size', 'stitcher_id')
+        fields = ('id', 'title', 'description', 'completed_date', 'photo', 'fabric', 'size', 'fabric_id', 'size_id', 'stitcher_id')
         depth = 2
 
 class Designs(ViewSet):
