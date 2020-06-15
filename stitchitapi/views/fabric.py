@@ -41,6 +41,16 @@ class Fabrics(ViewSet):
             Response -- JSON serialized list of fabrics
         """
         fabrics = Fabric.objects.all()
+
+        type_param = self.request.query_params.get('type', None)
+        count_param = self.request.query_params.get('count', None)
+
+        if type_param is not None:
+            fabrics = fabrics.filter(type=type_param)
+
+        if count_param is not None:
+            fabrics = fabrics.filter(count=count_param)
+
         serializer = FabricSerializer(
             fabrics,
             many=True,
