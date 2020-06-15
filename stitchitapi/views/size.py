@@ -55,18 +55,23 @@ class Sizes(ViewSet):
         return Response(serializer.data)
     
     def create(self, request):
-        """Handle POST operations
+        """Handle POST operations. If the size already exists, return the existing size, if it doesn't, then create a new instance and return it
 
         Returns:
             Response -- JSON serialized size instance
         """
-        newsize = Size()
-        newsize.size = request.data["size"]
-        newsize.save()
+        try:
+            size = Size.objects.get(size=request.data["size"])
+            serializer = SizeSerializer(size, context={'request': request})
+            return Response(serializer.data)
+        except Size.DoesNotExist:
+            newsize = Size()
+            newsize.size = request.data["size"]
+            newsize.save()
 
-        serializer = SizeSerializer(newsize, context={'request': request})
+            serializer = SizeSerializer(newsize, context={'request': request})
 
-        return Response(serializer.data)
+            return Response(serializer.data)
     
     def update(self, request, pk=None):
         """Handle PUT requests for a size

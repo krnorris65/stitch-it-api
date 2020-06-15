@@ -64,14 +64,19 @@ class Fabrics(ViewSet):
         Returns:
             Response -- JSON serialized Fabric instance
         """
-        newfabric = Fabric()
-        newfabric.type = request.data["type"]
-        newfabric.count = request.data["count"]
-        newfabric.save()
+        try:
+            fabric = Fabric.objects.get(type=request.data["type"], count=request.data["count"])
+            serializer = FabricSerializer(fabric, context={'request': request})
+            return Response(serializer.data)
+        except Fabric.DoesNotExist:
+            newfabric = Fabric()
+            newfabric.type = request.data["type"]
+            newfabric.count = request.data["count"]
+            newfabric.save()
 
-        serializer = FabricSerializer(newfabric, context={'request': request})
+            serializer = FabricSerializer(newfabric, context={'request': request})
 
-        return Response(serializer.data)
+            return Response(serializer.data)
     
     def update(self, request, pk=None):
         """Handle PUT requests for a fabric
