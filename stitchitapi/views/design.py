@@ -5,6 +5,9 @@ from rest_framework import serializers
 from rest_framework import status
 from stitchitapi.models import Fabric, Size, Design, Stitcher
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
+import os
+from django.conf import settings
+
 
 
 class DesignSerializer(serializers.HyperlinkedModelSerializer):
@@ -100,12 +103,20 @@ class Designs(ViewSet):
             fabric = Fabric.objects.get(pk=request.data['fabric_id'])
             size = Size.objects.get(pk=request.data['size_id'])
 
+            uploaded_photo = request.data["photo"]
+            # if the existing photo has been removed or a new photo has been added, update the photo property
+            if type(uploaded_photo) != str or uploaded_photo == '':
+                # first delete the existing photo
+                design.photo.delete(save=True)
+                # then update the photo to the new image
+                design.photo = request.data["photo"]
+
+
             design.title = request.data["title"]
             if request.data["description"] != "":
                 design.description = request.data["description"]
             if request.data["completed_date"] != "":
                 design.completed_date = request.data["completed_date"]
-            design.photo = request.data["photo"]
             design.fabric = fabric
             design.size = size
             design.save()
