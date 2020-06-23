@@ -47,6 +47,11 @@ class Follows(ViewSet):
 
         follows = Follow.objects.filter(follower=requesting_user)
 
+        # Support filtering follows by pending
+        pending = self.request.query_params.get('pending', None)
+        if pending is not None:
+            follows = follows.filter(pending=pending)
+
 
         serializer = FollowSerializer(
             follows,
