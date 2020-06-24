@@ -4,8 +4,8 @@ from .stitcher import Stitcher
 
 class Follow(models.Model):
 
-    follower = models.ForeignKey(Stitcher, on_delete=models.CASCADE, related_name="followers")
-    stitcher = models.ForeignKey(Stitcher, on_delete=models.CASCADE, related_name="followees")
+    follower = models.ForeignKey(Stitcher, on_delete=models.CASCADE, related_name="follows")
+    stitcher = models.ForeignKey(Stitcher, on_delete=models.CASCADE, related_name="followers")
     pending = models.BooleanField()
 
     class Meta:
