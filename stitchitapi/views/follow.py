@@ -19,7 +19,7 @@ class FollowSerializer(serializers.HyperlinkedModelSerializer):
             view_name='follow',
             lookup_field='id'
         )
-        fields = ('id', 'follower_id', 'stitcher_id', 'pending', 'stitcher')
+        fields = ('id', 'follower_id', 'stitcher_id', 'pending', 'stitcher', 'follower')
         depth = 2
 
 class Follows(ViewSet):
