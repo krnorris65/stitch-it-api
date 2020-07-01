@@ -41,6 +41,16 @@ class Fabrics(ViewSet):
             Response -- JSON serialized list of fabrics
         """
         fabrics = Fabric.objects.all()
+
+        type_param = self.request.query_params.get('type', None)
+        count_param = self.request.query_params.get('count', None)
+
+        if type_param is not None:
+            fabrics = fabrics.filter(type=type_param)
+
+        if count_param is not None:
+            fabrics = fabrics.filter(count=count_param)
+
         serializer = FabricSerializer(
             fabrics,
             many=True,
@@ -54,14 +64,19 @@ class Fabrics(ViewSet):
         Returns:
             Response -- JSON serialized Fabric instance
         """
-        newfabric = Fabric()
-        newfabric.type = request.data["type"]
-        newfabric.count = request.data["count"]
-        newfabric.save()
+        try:
+            fabric = Fabric.objects.get(type=request.data["type"], count=request.data["count"])
+            serializer = FabricSerializer(fabric, context={'request': request})
+            return Response(serializer.data)
+        except Fabric.DoesNotExist:
+            newfabric = Fabric()
+            newfabric.type = request.data["type"]
+            newfabric.count = request.data["count"]
+            newfabric.save()
 
-        serializer = FabricSerializer(newfabric, context={'request': request})
+            serializer = FabricSerializer(newfabric, context={'request': request})
 
-        return Response(serializer.data)
+            return Response(serializer.data)
     
     def update(self, request, pk=None):
         """Handle PUT requests for a fabric

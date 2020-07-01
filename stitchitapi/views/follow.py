@@ -19,7 +19,7 @@ class FollowSerializer(serializers.HyperlinkedModelSerializer):
             view_name='follow',
             lookup_field='id'
         )
-        fields = ('id', 'follower_id', 'stitcher_id', 'pending', 'stitcher')
+        fields = ('id', 'follower_id', 'stitcher_id', 'pending', 'stitcher', 'follower')
         depth = 2
 
 class Follows(ViewSet):
@@ -46,6 +46,16 @@ class Follows(ViewSet):
         requesting_user = Stitcher.objects.get(user=request.auth.user)
 
         follows = Follow.objects.filter(follower=requesting_user)
+
+        # if user needs to see unapproved follow requests
+        unapproved_request = self.request.query_params.get('unapproved_request', None)
+        if unapproved_request is not None:
+            follows = Follow.objects.filter(stitcher=requesting_user, pending=unapproved_request)
+
+        # Support filtering follows by pending
+        pending = self.request.query_params.get('pending', None)
+        if pending is not None:
+            follows = follows.filter(pending=pending)
 
 
         serializer = FollowSerializer(

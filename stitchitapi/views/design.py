@@ -5,6 +5,9 @@ from rest_framework import serializers
 from rest_framework import status
 from stitchitapi.models import Fabric, Size, Design, Stitcher
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
+import os
+from django.conf import settings
+
 
 
 class DesignSerializer(serializers.HyperlinkedModelSerializer):
@@ -19,7 +22,7 @@ class DesignSerializer(serializers.HyperlinkedModelSerializer):
             view_name='design',
             lookup_field='id'
         )
-        fields = ('id', 'title', 'description', 'completed_date', 'photo', 'fabric', 'size', 'stitcher_id')
+        fields = ('id', 'title', 'description', 'completed_date', 'photo', 'fabric', 'size', 'fabric_id', 'size_id', 'stitcher_id')
         depth = 2
 
 class Designs(ViewSet):
@@ -74,8 +77,10 @@ class Designs(ViewSet):
 
         newdesign = Design()
         newdesign.title = request.data["title"]
-        newdesign.description = request.data["description"]
-        newdesign.completed_date = request.data["completed_date"]
+        if request.data["description"] != "":
+            newdesign.description = request.data["description"]
+        if request.data["completed_date"] != "":
+            newdesign.completed_date = request.data["completed_date"]
         newdesign.photo = request.data["photo"]
         newdesign.fabric = fabric
         newdesign.size = size
@@ -98,10 +103,20 @@ class Designs(ViewSet):
             fabric = Fabric.objects.get(pk=request.data['fabric_id'])
             size = Size.objects.get(pk=request.data['size_id'])
 
+            uploaded_photo = request.data["photo"]
+            # if the existing photo has been removed or a new photo has been added, update the photo property
+            if type(uploaded_photo) != str or uploaded_photo == '':
+                # first delete the existing photo
+                design.photo.delete(save=True)
+                # then update the photo to the new image
+                design.photo = request.data["photo"]
+
+
             design.title = request.data["title"]
-            design.description = request.data["description"]
-            design.completed_date = request.data["completed_date"]
-            design.photo = request.data["photo"]
+            if request.data["description"] != "":
+                design.description = request.data["description"]
+            if request.data["completed_date"] != "":
+                design.completed_date = request.data["completed_date"]
             design.fabric = fabric
             design.size = size
             design.save()
