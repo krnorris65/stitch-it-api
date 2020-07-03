@@ -1,7 +1,7 @@
 ## Stitch It API
 [Stitch It](https://github.com/krnorris65/stitch-it-app) is a front-end React app that allows stitchers to keep track of their own cross stitch projects as well as follow other stitchers and see their cross stitch projects. 
 
-Stitch It API is a Django REST API that Stitch It connects to in order to store data.
+Stitch It API is a Django REST API that Stitch It connects to in order to store data in a SQLite database.
 
 ### Initial setup to run this app:
 1) Clone repo:
